@@ -3,24 +3,31 @@ import numpy as np
 
 class color_mask:
     def __init__(self, name) -> None:
-        
+        """
+        Constructor of mask.
+
+        name: Name of mask for later usability (str)
+        """
         color_mask.name = name
 
 
 
 
-    def define_hsv_limits(self, test_im_path):
+    def define_hsv_limits(self, image_input):
         """
         This function opens a open cv window with sliders. These sliders allow the user to isoalte
-        a color they want to mask
+        a color they want to mask. Threshold values are written to the color_mask object.
+
+        image_input: path to input image
         """
+
         cv2.namedWindow('image', cv2.WINDOW_NORMAL)
 
         def nothing(x):
             pass
 
         # Load image
-        image = cv2.imread(test_im_path)
+        image = cv2.imread(image_input)
 
         # Create a window
 
@@ -81,6 +88,12 @@ class color_mask:
 
     def define_mask(self, image_input, kernel=np.ones((5,5))):
         """
+        Refine HSV mask with previously set threshold values. Increase amount of dilations with 
+        a slider in the opening window.  Iterations either with 5x5 kernel or a custom kerne. 
+        Entered values are set for the selected color_mask object. 
+
+        image_input: path to input image (str)
+        kernel: dilation kernel, can be e.g. matrix of 3x3, 5x5 or 7x7 ones. 
         """
 
         threshhold_dict = self.threshholds
@@ -124,6 +137,11 @@ class color_mask:
 
 def apply_combined_masks(masks, image_input, output_dir=False):
     """
+    Apply list of masks to image. If output_dir is a path, a mask file with the same of the input image is written to "output_dir".
+
+    masks: list of masks
+    image_input: path to input image (str)
+    output_dir: False or path to output dir for masks
     """
     
 
